@@ -1,6 +1,6 @@
 # **[sdwebuiapi](https://github.com/4927525/sdwebuiapi)**
 
-**基于gin+gorm+mysql+sd模型的一个项目demo，可二开**
+**基于gin+gorm+mysql+sd模型的Golang API客户端，可二开**
 
 ## 流程图
 
