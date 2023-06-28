@@ -1,0 +1,9 @@
+logs
+go.sum
+config.yaml
+test/config.yaml
+config.yaml.prod
+resource/upload
+.vscode
+.idea
+.git

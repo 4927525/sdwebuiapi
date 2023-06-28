@@ -1,0 +1,129 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/sdwebuiapi/img2img": {
+            "post": {
+                "description": "图生图",
+                "tags": [
+                    "sdapi相关"
+                ],
+                "summary": "图生图",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "图片url",
+                        "name": "original_url",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "mask_url 遮罩层 oss 路径",
+                        "name": "mask_url",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "prompts 文字关键词",
+                        "name": "prompts",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "model_id 风格ID",
+                        "name": "model_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size 0或4 跟随原图尺寸 1 3:4竖 2 4:3横 3 1:1方",
+                        "name": "size",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "denoising_strength 相似度 1~0",
+                        "name": "denoising_strength",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "inpainting_fill 重绘 1 不重绘0",
+                        "name": "inpainting_fill",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/sdwebuiapi/txt2img": {
+            "post": {
+                "description": "文生图",
+                "tags": [
+                    "sdapi相关"
+                ],
+                "summary": "文生图",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "prompts 文字关键词",
+                        "name": "prompts",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "size 1 3:4竖 2 4:3横 3 1:1方",
+                        "name": "size",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "model_id 风格ID",
+                        "name": "model_id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "serializer.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "type": "string"
+                },
+                "msg": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
