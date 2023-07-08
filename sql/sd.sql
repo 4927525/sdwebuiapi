@@ -53,3 +53,7 @@ CREATE TABLE `sd_server` (
   `updated_at` datetime DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='服务器表';
+
+INSERT INTO `sd_model` (`id`, `name`, `file_name`, `image_url`, `server`, `sort`, `status`, `created_at`, `updated_at`) VALUES (1, '风格', 'style.pt', 'jpg', 1, 0, 0, '2006-01-01 10:48:20', '2006-01-01 10:48:20');
+INSERT INTO `sd_server` (`id`, `url`, `server`, `status`, `created_at`, `updated_at`) VALUES (1, 'GPU服务器请求地址', 1, 0, NULL, '2006-01-01 10:48:20');
+
