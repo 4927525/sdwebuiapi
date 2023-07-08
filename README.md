@@ -36,7 +36,7 @@
 
 ## 数据库导入
 
-如果是非docker部署的话，需要手动创建ces库，并导入sql/sql.sql文件
+如果是非docker部署的话，需要手动创建ces库，并导入sql/sd.sql文件
 
 ## 项目运行
 
