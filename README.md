@@ -50,6 +50,14 @@ go build -o main
 ./main
 ```
 
+### docker运行
+
+项目根目录内置了 Dockerfile、docker-compose.yml，目的是快速构建项目环境，简易化项目运行难度
+
+```bash
+docker-compose up -d
+```
+
 ## 主要功能
 
 - 文生图
@@ -69,7 +77,7 @@ go build -o main
 
 - [ ] 加入kafka或是rabbitmq，出图结果异步回调通知服务器
 - [ ] 抽离 service 的结构体到 types，引入 sync.Once 模块，重构 service 层
-- [ ] 加入docker-compose
+- [x] 加入docker-compose
 - [ ] 加入 Jaeger 进行链路追踪
 - [ ] 加入 Skywalking 监控中间件
 - [ ] 加入ELK体系，方便日志查看和管理

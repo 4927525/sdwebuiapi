@@ -1,0 +1,43 @@
+version: '3.9'
+
+networks:
+    sdnet:
+        driver: bridge
+services:
+  sdapi:
+    container_name: sdapi
+    build: .
+    ports:
+      - "8009:8009"
+    networks:
+      - sdnet
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=ces
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d/
+    ports:
+      - "3306:3306"
+    networks:
+      - sdnet
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    environment:
+      - REDIS_PASSWORD=root
+      - ALLOW_EMPTY_PASSWORD=no
+    volumes:
+      - /usr/local/redis:/usr/local/redis
+    ports:
+      - "6379:6379"
+    networks:
+      - sdnet
