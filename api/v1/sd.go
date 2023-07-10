@@ -53,3 +53,22 @@ func SdImg2img(c *gin.Context) {
 		logger.LogrusObj.Infoln(err)
 	}
 }
+
+// SdImgDetail 获取图片详情
+// @Summary 获取图片详情
+// @Schemes
+// @Description 获取图片详情
+// @Tags sdapi相关
+// @Param id formData int true "id"
+// @Success 200 {object} serializer.Sd2imgCreateResult
+// @Router /sdwebuiapi/imgDetail [post]
+func SdImgDetail(c *gin.Context) {
+	sd := service.SdImgDetailService{}
+	if err := c.ShouldBind(&sd); err == nil {
+		res := sd.ImgDetail(c.Request.Context())
+		c.JSON(e.SUCCESS, res)
+	} else {
+		c.JSON(e.InvalidParams, ErrorResponse(err))
+		logger.LogrusObj.Infoln(err)
+	}
+}

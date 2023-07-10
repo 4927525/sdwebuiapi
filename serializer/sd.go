@@ -2,6 +2,7 @@ package serializer
 
 import (
 	"sdwebuiapi/config"
+	"sdwebuiapi/dao"
 	"sdwebuiapi/helper"
 	"sdwebuiapi/model"
 
@@ -10,48 +11,16 @@ import (
 
 type Sd struct{}
 
-type SdTxt2imgCreateResult struct {
-	Prompts      string `json:"prompts"`
-	Username     string `json:"username"`
-	ModelName    string `json:"model_name"`
-	CreatedAt    string `json:"created_at"`
-	Time         int    `json:"time"`
-	TimeStr      string `json:"time_str"`
-	Size         int    `json:"size"`
-	ClientSize   int    `json:"client_size"`
-	ModelId      int    `json:"model_id"`
-	IsSave       int    `json:"is_save"`
-	IsDownload   int    `json:"is_download"`
-	Title        string `json:"title"`
-	Desc         string `json:"desc"`
-	TagIds       string `json:"tag_ids"`
-	UseCount     int    `json:"use_count"`
-	CollectCount int    `json:"collect_count"`
-	CommentCount int    `json:"comment_count"`
-	ImageUrl     string `json:"image_url"`
-	Status       int    `json:"status"`
-}
-
-type SdImg2imgCreateResult struct {
-	Prompts      string `json:"prompts"`
-	Username     string `json:"username"`
-	ModelName    string `json:"model_name"`
-	CreatedAt    string `json:"created_at"`
-	Time         int    `json:"time"`
-	TimeStr      string `json:"time_str"`
-	Size         int    `json:"size"`
-	ClientSize   int    `json:"client_size"`
-	ModelId      int    `json:"model_id"`
-	IsSave       int    `json:"is_save"`
-	IsDownload   int    `json:"is_download"`
-	Title        string `json:"title"`
-	Desc         string `json:"desc"`
-	TagIds       string `json:"tag_ids"`
-	UseCount     int    `json:"use_count"`
-	CollectCount int    `json:"collect_count"`
-	CommentCount int    `json:"comment_count"`
-	ImageUrl     string `json:"image_url"`
-	Status       int    `json:"status"`
+type Sd2imgCreateResult struct {
+	Prompts   string `json:"prompts"`
+	ModelName string `json:"model_name"`
+	CreatedAt string `json:"created_at"`
+	Time      int    `json:"time"`
+	TimeStr   string `json:"time_str"`
+	Size      int    `json:"size"`
+	ModelId   int    `json:"model_id"`
+	ImageUrl  string `json:"image_url"`
+	Status    int    `json:"status"`
 }
 
 func (*Sd) WaitSeconds(id, modelId int, createdAt string) (waitSeconds int, timeStr string) {
@@ -71,8 +40,6 @@ func (*Sd) WaitSeconds(id, modelId int, createdAt string) (waitSeconds int, time
 
 	}
 
-	//diffSeconds := int(carbon.Parse(sdQueue.UpdatedAt.Format(define.DateLayout)).DiffInSeconds(carbon.Parse(carbon.Now().ToDateTimeString())))
-
 	waitSeconds = int(cnt*39 + 24)
 
 	if waitSeconds < 0 {
@@ -83,4 +50,33 @@ func (*Sd) WaitSeconds(id, modelId int, createdAt string) (waitSeconds int, time
 	timeStr = h + ":" + m
 
 	return waitSeconds, timeStr
+}
+
+func (s *Sd) Sd2imgCreateResponse(create *model.SdCreate) (resp *Sd2imgCreateResult, err error) {
+	modelDao := dao.SdModel{}
+	modelName := ""
+
+	if create.ModelId != 0 {
+		sdModel, err := modelDao.GetById(create.ModelId)
+		if err != nil {
+			return nil, err
+		}
+		modelName = sdModel.Name
+	}
+
+	sd := Sd{}
+	waitSeconds, timeStr := sd.WaitSeconds(create.Id, create.ModelId, create.CreatedAt.String())
+
+	return &Sd2imgCreateResult{
+		Prompts:   create.Prompts,
+		ModelName: modelName,
+		CreatedAt: create.CreatedAt.Format("2006.01.02 15:04:05"),
+		Time:      waitSeconds,
+		TimeStr:   timeStr,
+		Size:      create.Size,
+		ModelId:   create.ModelId,
+		ImageUrl:  create.ImageUrl,
+		Status:    create.Status,
+	}, nil
+
 }

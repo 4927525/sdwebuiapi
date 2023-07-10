@@ -9,6 +9,27 @@ definitions:
       status:
         type: integer
     type: object
+  serializer.Sd2imgCreateResult:
+    properties:
+      created_at:
+        type: string
+      image_url:
+        type: string
+      model_id:
+        type: integer
+      model_name:
+        type: string
+      prompts:
+        type: string
+      size:
+        type: integer
+      status:
+        type: integer
+      time:
+        type: integer
+      time_str:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -54,6 +75,23 @@ paths:
           schema:
             $ref: '#/definitions/serializer.Response'
       summary: 图生图
+      tags:
+      - sdapi相关
+  /sdwebuiapi/imgDetail:
+    post:
+      description: 获取图片详情
+      parameters:
+      - description: id
+        in: formData
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/serializer.Sd2imgCreateResult'
+      summary: 获取图片详情
       tags:
       - sdapi相关
   /sdwebuiapi/txt2img:

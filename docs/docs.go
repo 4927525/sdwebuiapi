@@ -81,6 +81,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/sdwebuiapi/imgDetail": {
+            "post": {
+                "description": "获取图片详情",
+                "tags": [
+                    "sdapi相关"
+                ],
+                "summary": "获取图片详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/serializer.Sd2imgCreateResult"
+                        }
+                    }
+                }
+            }
+        },
         "/sdwebuiapi/txt2img": {
             "post": {
                 "description": "文生图",
@@ -134,6 +160,38 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "integer"
+                }
+            }
+        },
+        "serializer.Sd2imgCreateResult": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "model_id": {
+                    "type": "integer"
+                },
+                "model_name": {
+                    "type": "string"
+                },
+                "prompts": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "integer"
+                },
+                "time_str": {
+                    "type": "string"
                 }
             }
         }

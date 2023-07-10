@@ -66,6 +66,7 @@ docker-compose up -d
 
 - 文生图
 - 图生图
+- 出图进度
 - 局部重绘
 - 切换pt风格
 - 切换服务器模型
@@ -87,6 +88,7 @@ docker-compose up -d
 - [ ] 加入ELK体系，方便日志查看和管理
 - [ ] 加入前端代码
 - [x] base642url方法补充
+- [x] 绘制图片进度
 
 ## 生命周期
 
@@ -147,7 +149,7 @@ redis:
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"prompts\": \"((masterpiece)), (((best quality))), ((ultra-detailed)), ((illustration)), dusk, in the cyberpunk city, girl, veil, hair_ornament,  artbook, real, realistic, earrings, black choker ,shackles,  crop top,\",\r\n    \"size\": 2,\r\n    \"model_id\":1\r\n}",
+					"raw": "{\r\n    \"prompts\": \"((masterpiece)), (((best quality))), ((ultra-detailed)), ((illustration)), dusk, in the cyberpunk city, girl, veil, hair_ornament,  artbook, real, realistic, earrings, black choker ,shackles,  crop top,\",\r\n    \"size\": 1,\r\n    \"model_id\":1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -155,7 +157,7 @@ redis:
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8009/api/v1/sd/txt2img",
+					"raw": "http://127.0.0.1:8009/api/v1/sdwebuiapi/txt2img",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -167,7 +169,7 @@ redis:
 					"path": [
 						"api",
 						"v1",
-						"sd",
+						"sdwebuiapi",
 						"txt2img"
 					]
 				}
@@ -181,7 +183,7 @@ redis:
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"prompts\": \"color purple\",\r\n    \"model_id\": 1,\r\n    \"denoising_strength\":0.25,\r\n    \"inpainting_fill\":0,\r\n    \"size\": 3,\r\n    // \"mask_url\":\"https://ossstatic.leiting.com/static/wd/home/202207/pc/role11.png\",\r\n    \"original_url\":\"https://ossstatic.leiting.com/static/wd/home/202207/pc/role11.png\"\r\n}",
+					"raw": "{\r\n    \"prompts\": \"color purple\",\r\n    \"model_id\": 1,\r\n    \"denoising_strength\":0.25,\r\n    \"inpainting_fill\":0,\r\n    \"size\": 3,\r\n    // \"mask_url\":\"xxx\",\r\n    \"original_url\":\"xxxx\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -189,7 +191,7 @@ redis:
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8009/api/v1/sd/img2img",
+					"raw": "http://127.0.0.1:8009/api/v1/sdwebuiapi/img2img",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -201,8 +203,42 @@ redis:
 					"path": [
 						"api",
 						"v1",
-						"sd",
+						"sdwebuiapi",
 						"img2img"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "imgDetail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8009/api/v1/sdwebuiapi/imgDetail",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8009",
+					"path": [
+						"api",
+						"v1",
+						"sdwebuiapi",
+						"imgDetail"
 					]
 				}
 			},
@@ -216,11 +252,29 @@ redis:
 
 ### txt2img
 
-![https://cdn.staticaly.com/gh/4927525/images@master/20230628/image-(1).7d38vap1xzw0.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230628/image-(1).7d38vap1xzw0.jpg)
+![https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.75mjde8x30w0.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.75mjde8x30w0.jpg)
 
 ### img2img
 
-![https://cdn.staticaly.com/gh/4927525/images@master/20230628/image-(2).6ky5ep82ykk0.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230628/image-(2).6ky5ep82ykk0.jpg)
+original_url：原始图片地址
+
+mark_url：遮罩层图片地址，当inpainting_fill参数为1时生效
+
+![https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.35t3qkzz71c0.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.35t3qkzz71c0.jpg)
+
+
+
+### imgDetail(查看图片详情 、出图进度)
+
+#### 出图中
+
+time字段为剩余出图秒数
+
+![https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.6jeta9cf9hw0.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.6jeta9cf9hw0.jpg)
+
+#### 已出图
+
+![https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.5vfoepa99ak0.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.5vfoepa99ak0.jpg)
 
 # API
 
@@ -565,4 +619,4 @@ redis:
 
 http://localhost:8009/swagger/index.html
 
-![https://cdn.staticaly.com/gh/4927525/images@master/20230628/image.k72oz4u7q4g.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230628/image.k72oz4u7q4g.jpg)
+![https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.1ivawpmyddnk.jpg](https://cdn.staticaly.com/gh/4927525/images@master/20230710/image.1ivawpmyddnk.jpg)

@@ -50,6 +50,10 @@ type SdImg2imgService struct {
 	Come              int     `json:"come" form:"come"`
 }
 
+type SdImgDetailService struct {
+	Id int `json:"id" form:"id"`
+}
+
 type SdImg2imgMaskRequest struct {
 	BatchSize             int64       `json:"batch_size"`
 	CfgScale              int64       `json:"cfg_scale"`
@@ -230,6 +234,45 @@ type SdImg2ImgResponse struct {
 		Tiling                bool        `json:"tiling"`
 		Width                 int64       `json:"width"`
 	} `json:"parameters"`
+}
+
+// ImgDetail 获取绘画详情
+func (s *SdImgDetailService) ImgDetail(ctx context.Context) serializer.Response {
+	createDao := dao.SdCreate{}
+
+	get, err := createDao.Get(s.Id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return serializer.Response{
+				Status: e.AINotFoundError,
+				Msg:    e.GetMsg(e.AINotFoundError),
+			}
+		} else {
+			logrus.Errorln(err)
+			return serializer.Response{
+				Status: e.SqlFindError,
+				Msg:    e.GetMsg(e.SqlFindError),
+			}
+		}
+	}
+
+	svlz := serializer.Sd{}
+
+	res, err := svlz.Sd2imgCreateResponse(get)
+
+	if err != nil {
+		logrus.Errorln(err)
+		return serializer.Response{
+			Status: e.SqlFindError,
+			Msg:    e.GetMsg(e.SqlFindError),
+		}
+	}
+
+	return serializer.Response{
+		Status: 1,
+		Data:   res,
+	}
+
 }
 
 // Create 图生图创建

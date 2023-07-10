@@ -9,11 +9,12 @@ import (
 // Sd stable-diffusion-webui相关
 func Sd(v1 *gin.RouterGroup) {
 
-	check := v1.Group("/sd")
-	check.Use()
+	sd := v1.Group("/sdwebuiapi")
+	sd.Use()
 	{
-		check.POST("/txt2img", apiV1.SdTxt2img) // 文生图
-		check.POST("/img2img", apiV1.SdImg2img) // 图生图
+		sd.POST("/txt2img", apiV1.SdTxt2img)     // 文生图
+		sd.POST("/img2img", apiV1.SdImg2img)     // 图生图
+		sd.POST("/imgDetail", apiV1.SdImgDetail) // 获取图片详情
 	}
 
 }
